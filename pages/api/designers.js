@@ -5,14 +5,14 @@ const xano = createXanoClient();
 export default async function handler(req, res) {
   if (req.method === 'GET') {
     try {
-      const designers = await xano.get('/designers');
+      const designers = await xano.get('/pads_community');
       res.status(200).json(designers);
     } catch (error) {
       res.status(500).json({ error: 'Failed to fetch designers' });
     }
   } else if (req.method === 'POST') {
     try {
-      const designer = await xano.post('/designers', req.body);
+      const designer = await xano.post('/pads_community', req.body);
       res.status(201).json(designer);
     } catch (error) {
       res.status(500).json({ error: 'Failed to create designer' });
