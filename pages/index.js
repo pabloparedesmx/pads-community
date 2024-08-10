@@ -8,7 +8,7 @@ const DesignerCard = ({ designer }) => (
     <div className="mb-4">
       <div className="relative pb-[100%]">
         <img 
-          src={designer.profilePicture || '/api/placeholder/300/300'}
+          src={designer.profile_picture || '/api/placeholder/300/300'}
           alt={designer.name} 
           className="absolute top-0 left-0 w-full h-full object-cover rounded-lg"
         />
@@ -17,13 +17,7 @@ const DesignerCard = ({ designer }) => (
     <h2 className="text-xl font-semibold">{designer.name}</h2>
     <p className="text-sm text-gray-600">{designer.location}</p>
     <p className="mt-2">{designer.role}</p>
-    <div className="mt-4 flex flex-wrap gap-2">
-      {designer.tags.map((tag, index) => (
-        <span key={index} className="bg-gray-200 px-2 py-1 rounded-full text-sm">
-          {tag}
-        </span>
-      ))}
-    </div>
+    <p className="mt-2">{designer.description}</p>
     <div className="mt-4 flex justify-between">
       <a href={designer.site} target="_blank" rel="noopener noreferrer" className="text-blue-500 flex items-center">
         <Globe size={16} className="mr-1" /> Site
