@@ -7,9 +7,10 @@ const DesignerCard = ({ designer }) => (
     <div className="mb-4">
       <div className="relative pb-[100%]">
         <img 
-          src={designer.profile_picture || '/api/placeholder/300/300'}
+          src={designer.profile_picture ? `${process.env.NEXT_PUBLIC_XANO_API_URL}${designer.profile_picture}` : '/placeholder-image.jpg'}
           alt={designer.name} 
           className="absolute top-0 left-0 w-full h-full object-cover rounded-lg"
+          onError={(e) => {e.target.onerror = null; e.target.src='/placeholder-image.jpg'}}
         />
       </div>
     </div>
@@ -17,7 +18,7 @@ const DesignerCard = ({ designer }) => (
     <p className="text-sm text-gray-600">{designer.location}</p>
     <p className="mt-2">{designer.role}</p>
     <p className="mt-2 text-sm">{designer.description}</p>
-    <div className="mt-4 flex justify-between">
+    <div className="mt-4 flex justify-start space-x-4">
       {designer.site && (
         <a href={designer.site} target="_blank" rel="noopener noreferrer" className="text-blue-500 flex items-center">
           <Globe size={16} className="mr-1" /> Site
@@ -33,7 +34,48 @@ const DesignerCard = ({ designer }) => (
 );
 
 const ProfileForm = ({ onSubmit }) => {
-  // ... (keep the existing ProfileForm code)
+  const [formData, setFormData] = useState({
+    name: '',
+    location: '',
+    role: '',
+    site: '',
+    twitter: '',
+    description: '',
+    profile_picture: null
+  });
+
+  const handleChange = (e) => {
+    if (e.target.name === 'profile_picture') {
+      setFormData({ ...formData, profile_picture: e.target.files[0] });
+    } else {
+      setFormData({ ...formData, [e.target.name]: e.target.value });
+    }
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    const data = new FormData();
+    for (const key in formData) {
+      data.append(key, formData[key]);
+    }
+    onSubmit(data);
+  };
+
+  return (
+    <form onSubmit={handleSubmit} className="mb-8 p-4 border rounded-lg bg-white">
+      <div className="mb-4">
+        <label className="cursor-pointer bg-blue-500 text-white px-4 py-2 rounded flex items-center inline-block">
+          <Upload size={20} className="mr-2" />
+          Upload Image
+          <input type="file" className="hidden" accept="image/*" name="profile_picture" onChange={handleChange} />
+        </label>
+      </div>
+      {/* Add input fields for name, location, role, site, twitter, description */}
+      <button type="submit" className="bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-4 rounded">
+        Submit
+      </button>
+    </form>
+  );
 };
 
 export default function Home() {
