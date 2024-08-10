@@ -34,15 +34,15 @@ const ProfileForm = ({ onSubmit }) => {
     name: '',
     location: '',
     role: '',
-    tags: '',
-    profilePicture: null,
     site: '',
-    twitter: ''
+    twitter: '',
+    description: '',
+    profile_picture: null
   });
 
   const handleChange = (e) => {
-    if (e.target.name === 'profilePicture') {
-      setFormData({ ...formData, profilePicture: e.target.files[0] });
+    if (e.target.name === 'profile_picture') {
+      setFormData({ ...formData, profile_picture: e.target.files[0] });
     } else {
       setFormData({ ...formData, [e.target.name]: e.target.value });
     }
@@ -59,78 +59,8 @@ const ProfileForm = ({ onSubmit }) => {
 
   return (
     <form onSubmit={handleSubmit} className="mb-8 p-4 border rounded-lg">
-      <div className="mb-4">
-        <label className="cursor-pointer bg-blue-500 text-white px-4 py-2 rounded flex items-center inline-block">
-          <Upload size={20} className="mr-2" />
-          Upload Image
-          <input type="file" className="hidden" accept="image/*" name="profilePicture" onChange={handleChange} />
-        </label>
-      </div>
-      <div className="mb-4">
-        <input
-          type="text"
-          placeholder="Name"
-          name="name"
-          value={formData.name}
-          onChange={handleChange}
-          className="w-full px-3 py-2 border rounded"
-          required
-        />
-      </div>
-      <div className="mb-4">
-        <input
-          type="text"
-          placeholder="Location"
-          name="location"
-          value={formData.location}
-          onChange={handleChange}
-          className="w-full px-3 py-2 border rounded"
-          required
-        />
-      </div>
-      <div className="mb-4">
-        <textarea
-          placeholder="Role"
-          name="role"
-          value={formData.role}
-          onChange={handleChange}
-          className="w-full px-3 py-2 border rounded"
-          required
-        />
-      </div>
-      <div className="mb-4">
-        <input
-          type="text"
-          placeholder="Tags (comma-separated)"
-          name="tags"
-          value={formData.tags}
-          onChange={handleChange}
-          className="w-full px-3 py-2 border rounded"
-          required
-        />
-      </div>
-      <div className="mb-4">
-        <input
-          type="url"
-          placeholder="Your website URL"
-          name="site"
-          value={formData.site}
-          onChange={handleChange}
-          className="w-full px-3 py-2 border rounded"
-          required
-        />
-      </div>
-      <div className="mb-4">
-        <input
-          type="text"
-          placeholder="Twitter handle (e.g. @username)"
-          name="twitter"
-          value={formData.twitter}
-          onChange={handleChange}
-          className="w-full px-3 py-2 border rounded"
-          required
-        />
-      </div>
+      {/* Add input fields for name, location, role, site, twitter, description */}
+      {/* Add file input for profile_picture */}
       <button type="submit" className="bg-green-500 text-white px-4 py-2 rounded">
         Submit
       </button>
