@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import Head from 'next/head';
-import Masonry from 'react-masonry-css';
 import { ChevronLeft, ChevronRight, Upload, Globe, Twitter } from 'lucide-react';
 
 const DesignerCard = ({ designer }) => (
@@ -22,7 +21,7 @@ const DesignerCard = ({ designer }) => (
       <a href={designer.site} target="_blank" rel="noopener noreferrer" className="text-blue-500 flex items-center">
         <Globe size={16} className="mr-1" /> Site
       </a>
-      <a href={`https://twitter.com/${designer.twitter.replace('@', '')}`} target="_blank" rel="noopener noreferrer" className="text-blue-500 flex items-center">
+      <a href={`https://twitter.com/${designer.twitter?.replace('@', '')}`} target="_blank" rel="noopener noreferrer" className="text-blue-500 flex items-center">
         <Twitter size={16} className="mr-1" /> Twitter
       </a>
     </div>
@@ -59,8 +58,78 @@ const ProfileForm = ({ onSubmit }) => {
 
   return (
     <form onSubmit={handleSubmit} className="mb-8 p-4 border rounded-lg">
-      {/* Add input fields for name, location, role, site, twitter, description */}
-      {/* Add file input for profile_picture */}
+      <div className="mb-4">
+        <label className="cursor-pointer bg-blue-500 text-white px-4 py-2 rounded flex items-center inline-block">
+          <Upload size={20} className="mr-2" />
+          Upload Image
+          <input type="file" className="hidden" accept="image/*" name="profile_picture" onChange={handleChange} />
+        </label>
+      </div>
+      <div className="mb-4">
+        <input
+          type="text"
+          placeholder="Name"
+          name="name"
+          value={formData.name}
+          onChange={handleChange}
+          className="w-full px-3 py-2 border rounded"
+          required
+        />
+      </div>
+      <div className="mb-4">
+        <input
+          type="text"
+          placeholder="Location"
+          name="location"
+          value={formData.location}
+          onChange={handleChange}
+          className="w-full px-3 py-2 border rounded"
+          required
+        />
+      </div>
+      <div className="mb-4">
+        <input
+          type="text"
+          placeholder="Role"
+          name="role"
+          value={formData.role}
+          onChange={handleChange}
+          className="w-full px-3 py-2 border rounded"
+          required
+        />
+      </div>
+      <div className="mb-4">
+        <textarea
+          placeholder="Description"
+          name="description"
+          value={formData.description}
+          onChange={handleChange}
+          className="w-full px-3 py-2 border rounded"
+          required
+        />
+      </div>
+      <div className="mb-4">
+        <input
+          type="url"
+          placeholder="Your website URL"
+          name="site"
+          value={formData.site}
+          onChange={handleChange}
+          className="w-full px-3 py-2 border rounded"
+          required
+        />
+      </div>
+      <div className="mb-4">
+        <input
+          type="text"
+          placeholder="Twitter handle (e.g. @username)"
+          name="twitter"
+          value={formData.twitter}
+          onChange={handleChange}
+          className="w-full px-3 py-2 border rounded"
+          required
+        />
+      </div>
       <button type="submit" className="bg-green-500 text-white px-4 py-2 rounded">
         Submit
       </button>
@@ -81,6 +150,9 @@ export default function Home() {
   const fetchDesigners = async () => {
     try {
       const response = await fetch('/api/designers');
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
       const data = await response.json();
       setDesigners(data);
     } catch (error) {
@@ -111,12 +183,6 @@ export default function Home() {
 
   const paginate = (pageNumber) => setCurrentPage(pageNumber);
 
-  const breakpointColumnsObj = {
-    default: 3,
-    1100: 2,
-    700: 1
-  };
-
   return (
     <div className="container mx-auto px-4">
       <Head>
@@ -139,17 +205,12 @@ export default function Home() {
 
       {showForm && <ProfileForm onSubmit={handleSubmit} />}
 
-      <Masonry
-        breakpointCols={breakpointColumnsObj}
-        className="my-masonry-grid"
-        columnClassName="my-masonry-grid_column"
-      >
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {currentDesigners.map(designer => (
           <DesignerCard key={designer.id} designer={designer} />
         ))}
-      </Masonry>
+      </div>
 
-      {/* Pagination */}
       <div className="flex justify-center mt-8">
         <button
           onClick={() => paginate(currentPage - 1)}
