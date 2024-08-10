@@ -2,10 +2,9 @@ import axios from 'axios';
 
 export const createXanoClient = () => {
   const client = axios.create({
-    baseURL: process.env.XANO_API_URL,
+    baseURL: process.env.NEXT_PUBLIC_XANO_API_URL,
     headers: {
       'Content-Type': 'application/json',
-      'X-API-Key': process.env.XANO_API_KEY,
     },
   });
 
